@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Storm Game</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid px-4">
+        <div class="row w-100 align-items-center m-0">
+            
+            <div class="col-4 d-flex align-items-center p-0">
+                <a class="navbar-brand m-0" href="inicio.html">
+                    <img src="OIP.jpg" alt="Logo" class="logo-img rounded-circle">
+                </a>
+            </div>
+
+            <div class="col-4 text-center p-0">
+                <a class="navbar-brand m-0 d-inline-block" href="inicio.html">
+                    <img src="Cool Text - Carniceria          Chapala 512858047033236.png" alt="Carnicería Chapala" class="titulo-img-centrado">
+                </a>
+            </div>
+
+            <div class="col-4 d-flex justify-content-end align-items-center gap-3 p-0">
+                <a class="nav-link text-white fw-semibold" href="#contacto">Contacto</a>
+                <div id="botones-sesion" class="d-flex gap-2 align-items-center">
+                    <button class="btn btn-outline-light rounded-pill px-3" type="button">Iniciar Sesión</button>
+                    <button class="btn btn-rosa-destacado rounded-pill px-3" type="button">Registrarse</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+<h2 id="Subtitulo">Todos los cortes</h2>
+<div class="carousel">
+    <button class="arrow left" onclick="moveCarousel(-1, 'track1')">❮</button>
+    <div class="viewport">
+        <div class="track" id="track1">
+            <button class="game" data-url="juego1.html" onclick="irAlJuego(this)"><img src="fotos/OIP.webp" alt=""></button>
+            <button class="game" data-url="juego2.html" onclick="irAlJuego(this)"><img src="fotos/OIP (1).webp" alt=""></button>
+            <button class="game" data-url="juego3.html" onclick="irAlJuego(this)"><img src="fotos/OIP (2).webp" alt=""></button>
+            <button class="game" data-url="juego4.html" onclick="irAlJuego(this)"><img src="fotos/OIP (3).webp" alt=""></button>
+            <button class="game" data-url="juego5.html" onclick="irAlJuego(this)"><img src="fotos/OIP (4).webp" alt=""></button>
+            <button class="game" data-url="juego6.html" onclick="irAlJuego(this)"><img src="fotos/OIP (5).webp" alt=""></button>
+            <button class="game" data-url="juego7.html" onclick="irAlJuego(this)"><img src="fotos/OIP (6).webp" alt=""></button>
+            <button class="game" data-url="juego8.html" onclick="irAlJuego(this)"><img src="fotos/OIP (7).webp" alt=""></button>
+        </div>
+    </div>
+    <button class="arrow right" onclick="moveCarousel(1, 'track1')">❯</button>
+</div>
+<h2 id="Subtitulo2">Especialidades de la casa</h2>
+<div class="carousel">
+    <button class="arrow left" onclick="moveCarousel(-1, 'track2')">❮</button>
+    <div class="viewport">
+        <div class="track" id="track2">
+            <div class="team-container">
+                <button class="game team" data-url="aventura1.html" onclick="irAlJuego(this)">
+                    <img src="fotos/equipos/th.webp" alt="Shinden">
+                </button>
+                <h4 class="team-label">Shinden</h4>
+            </div>
+
+            <div class="team-container">
+                <button class="game team" data-url="aventura2.html" onclick="irAlJuego(this)">
+                    <img src="fotos/equipos/th (1).webp" alt="Leviatán">
+                </button>
+                <h4 class="team-label">Leviatán</h4>
+            </div>
+
+            <div class="team-container">
+                <button class="game team" data-url="aventura3.html" onclick="irAlJuego(this)">
+                    <img src="fotos/equipos/th (2).webp" alt="KRÜ">
+                </button>
+                <h4 class="team-label">KRÜ Esports</h4>
+            </div>
+
+            <div class="team-container">
+                <button class="game team" data-url="aventura4.html" onclick="irAlJuego(this)">
+                    <img src="fotos/equipos/th (3).webp" alt="9z">
+                </button>
+                <h4 class="team-label">9z Team</h4>
+            </div>
+
+            <div class="team-container">
+                <button class="game team" data-url="aventura5.html" onclick="irAlJuego(this)">
+                    <img src="fotos/equipos/th (4).webp" alt="Vitality">
+                </button>
+                <h4 class="team-label">Vitality</h4>
+            </div>
+
+            <div class="team-container">
+                <button class="game team" data-url="aventura6.html" onclick="irAlJuego(this)">
+                    <img src="fotos/equipos/th (5).webp" alt="NAVI">
+                </button>
+                <h4 class="team-label">NAVI</h4>
+            </div>
+
+    <div class="team-container">
+        <button class="game team" data-url="aventura7.html" onclick="irAlJuego(this)">
+            <img src="fotos/equipos/th (6).webp" alt="G2">
+        </button>
+        <h4 class="team-label">G2 Esports</h4>
+    </div>
+
+    <div class="team-container">
+        <button class="game team" data-url="aventura8.html" onclick="irAlJuego(this)">
+            <img src="fotos/equipos/th (7).webp" alt="Furia">
+        </button>
+        <h4 class="team-label">Furia</h4>
+    </div>
+</div> </div> <button class="arrow right" onclick="moveCarousel(1, 'track2')">❯</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="scripts.js"></script>
+</body>
+</html>

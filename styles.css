@@ -1,0 +1,226 @@
+/* Variables de Color */
+:root {
+    --rosa-pastel-fuerte: #ff69b4;
+    --rosa-oscuro: #e05297;
+    --blanco: #ffffff;
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+/* Subtítulos principales */
+#Subtitulo, #Subtitulo2 {  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    font-family: 'Comic Neue', sans-serif;
+    font-weight: bold;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    margin-bottom: 0; 
+}
+
+#Subtitulo {
+    margin-top: 40px;
+}
+
+#Subtitulo2 {
+    margin-top: 80px;
+    margin-bottom: 5px; 
+}
+
+.navbar {
+    background-color: var(--rosa-pastel-fuerte) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+}
+
+.logo-img {
+    height: 75px;
+    width: 75px;
+    object-fit: cover;
+    border: 2px solid var(--blanco);
+}
+
+.titulo-img-centrado {
+    height: 90px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.navbar .nav-link {
+    color: var(--blanco) !important;
+    font-size: 1rem;
+    transition: opacity 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    opacity: 0.85;
+}
+.navbar .nav-link.active {
+    color: #fff0f5 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Botones del Navbar */
+.btn-rosa-destacado {
+    background-color: var(--blanco);
+    color: var(--rosa-pastel-fuerte);
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-rosa-destacado:hover {
+    background-color: var(--rosa-oscuro);
+    color: var(--blanco);
+}
+/* Carruseles y Viewports */
+.carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+    overflow: visible;
+}
+
+.viewport {
+    width: 800px;
+    overflow: hidden;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.track {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    padding: 10px 0;
+    will-change: transform;
+    width: max-content;
+}
+
+#track2 {
+    gap: 10px;
+    display: flex;
+    width: max-content;
+}
+
+/* Flechas del Carrusel */
+.arrow {
+    background: rgba(0, 0, 0, 0.7); 
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    margin: 0 15px;
+    transition: background 0.3s;
+}
+
+.arrow:hover {
+    background: purple;
+}
+
+/* Botones de Juegos */
+.game {
+    width: 200px;  
+    height: 120px;
+    margin: 0 !important;
+    background: #222;
+    border-radius: 10px;
+    overflow: hidden; 
+    flex-shrink: 0;
+}
+
+.game img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+button.game {
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    background: #222;
+    transition: transform 0.3s ease, filter 0.3s;
+}
+
+button.game:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px purple;
+}
+
+button.game:active {
+    transform: scale(0.95);
+}
+
+/* Contenedores de Equipos */
+.team-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    margin: 0 !important;
+    width: 200px;
+}
+
+.team-label {
+    margin-top: 10px;
+    color: white;
+    font-family: 'Comic Neue', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.team {
+    background: #222;
+    border: none;
+    cursor: pointer;
+}
+
+.team:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px purple;
+}
+
+.team img {
+    width: 97% !important; 
+    height: 97% !important;
+    object-fit: cover; 
+    padding: 0 !important; 
+    transition: transform 0.3s ease;
+}
+
+#track2 .team {
+    width: 100%; 
+    height: 120px; 
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222;
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+}
