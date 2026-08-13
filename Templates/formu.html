@@ -6,24 +6,14 @@
     <title>subidita de corte</title>
 </head>
 <body>
-    <form action="formu.html" method="post"> 
-        <div class="mb-3">
-            <label class="form-label">Nombre del corte</label>
-            <input type="text" name="nombre" class="form-control"  required>
-        </div>
+   <form action="{{ url_for('nuevo_corte') }}" method="POST">
+    <label for="nombre">Nombre del corte:</label>
+    <input type="text" id="nombre" name="nombre" required>
 
-        <div class="mb-3">
-            <label class="form-label">Precio del corte</label>
-            <input type="number" name="precio" class="form-control"  required>
-        </div>
+    <label for="precio">Precio:</label>
+    <input type="number" step="0.01" id="precio" name="precio" required>
 
-        <button type="submit " id="btnGuardarCorte" name="action" value="guardar" class="btn btn-success">Guardar</button>
-
-        </button>
-
-
-
-
-    </form>
+    <button type="submit">Guardar</button>
+</form>
 </body>
 </html>
