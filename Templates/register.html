@@ -23,7 +23,6 @@
             <div class="col-4 text-center p-0">
                 <img src="{{ url_for('static', filename='img/Cool Text - Carniceria Chapala 512858047033236.png') }}" alt="Carnicería Chapala" class="titulo-img-centrado">
             </div>
-
             <div class="col-4 d-flex justify-content-end align-items-center gap-3 p-0">
                 <a class="nav-link text-white fw-semibold" href="#contacto">Contacto</a>
             </div>
@@ -36,7 +35,7 @@
     <div class="card p-4 shadow-lg rounded-4 border-0" style="max-width: 450px; width: 100%; background-color: #ffffff;">
         <h2 id="Subtitulo" class="text-center mb-4" style="margin-top: 0;">Crear Cuenta</h2>
         
-        <form action="{{ url_for('registro') }}" method="POST">
+        <form action="{{ url_for('register') }}" method="POST">
             <div class="mb-3">
                 <label for="nombre" class="form-label fw-bold" style="font-family: 'Comic Neue', sans-serif;">Nombre completo:</label>
                 <input type="text" id="nombre" name="nombre" class="form-control rounded-3 border-2" placeholder="Juan Pérez" required>
