@@ -74,7 +74,6 @@
 
 <h2 id="Subtitulo2">Cortes</h2>
 
-<!-- Carrusel de Cortes de Carne -->
 <div class="carousel">
     <button class="arrow left" onclick="moveCarousel(-1, 'track2')">❮</button>
     <div class="viewport">
@@ -83,11 +82,14 @@
             {% for corte in cortes %}
                 <div class="team-container">
                     <div class="game team d-flex flex-column align-items-center justify-content-center bg-dark text-white p-3 rounded border border-danger">
-                        <!-- Imagen genérica o estática para la carne -->
+                        <!-- Imagen del producto -->
                         <img src="{{ url_for('static', filename='img/carnita.webp') }}" alt="{{ corte.nombre }}">
-                        <span class="badge bg-danger mt-2 fs-6">${{ corte.precio }}</span>
                     </div>
-                    <h4 class="team-label text-center mt-2">{{ corte.nombre }}</h4>
+                    <!-- Nombre y precio debajo de la imagen -->
+                    <div class="text-center mt-2">
+                        <h4 class="team-label m-0">{{ corte.nombre }}</h4>
+                        <span class="fw-bold text-dark fs-5">${{ corte.precio }}</span>
+                    </div>
                 </div>
             {% else %}
                 <div class="text-center text-white py-4 w-100">
