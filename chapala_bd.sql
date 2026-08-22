@@ -1,8 +1,9 @@
-create database chapala;
-use chapala;
+CREATE DATABASE IF NOT EXISTS chapala;
+USE chapala;
 
-create table cortes (
-id int auto_increment primary key,
-nombre varchar(100) not null,
-precio decimal(102) not null
+CREATE TABLE IF NOT EXISTS cortes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(65) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    imagen LONGBLOB
 );

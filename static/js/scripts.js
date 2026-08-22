@@ -5,7 +5,7 @@ function moveCarousel(direction, trackId) {
     isMoving = true;
 
     const track = document.getElementById(trackId);
-    const firstItem = track.firstElementChild;
+    const firstItem = track ? track.firstElementChild : null;
     
     if (!firstItem) {
         isMoving = false;
@@ -46,56 +46,25 @@ function moveCarousel(direction, trackId) {
     }
 }
 
-function irAlJuego(elemento) {
-    const url = elemento.getAttribute("data-url");
-    if (url) {
-        window.location.href = url;
-    } else {
-        console.error("No se definió una URL");
-    }
-}
-
-// --- LOGICA PARA MOSTRAR / OCULTAR EL DESPLEGABLE DE USUARIO ---
-
-// Actualiza esta función en tu inicio.js
-
 function chequearSesion() {
     const usuarioLogueado = localStorage.getItem("sesionActiva");
     const menuUsuario = document.getElementById("menu-usuario");
-    const botonesSesion = document.getElementById("botones-sesion"); // <-- Capturamos los botones
+    const botonesSesion = document.getElementById("botones-sesion");
 
-    // Control del menú desplegable del usuario
     if (menuUsuario) {
-        if (usuarioLogueado === "true") {
-            menuUsuario.style.setProperty("display", "block", "important");
-            console.log("Sesión activa detectada: Mostrando menú.");
-        } else {
-            menuUsuario.style.setProperty("display", "none", "important");
-            console.log("Sin sesión: Ocultando menú.");
-        }
+        menuUsuario.style.setProperty("display", usuarioLogueado === "true" ? "block" : "none", "important");
     }
 
-    // Control de los botones de Iniciar Sesión y Registrarse
     if (botonesSesion) {
-        if (usuarioLogueado === "true") {
-            // Si ya inició sesión, ocultamos los botones de ingreso
-            botonesSesion.style.setProperty("display", "none", "important");
-            console.log("Sesión activa: Ocultando botones de ingreso.");
-        } else {
-            // Si no hay sesión, los botones deben ser visibles usando flex de Bootstrap
-            botonesSesion.style.setProperty("display", "flex", "important");
-            console.log("Sin sesión: Mostrando botones de ingreso.");
-        }
+        botonesSesion.style.setProperty("display", usuarioLogueado === "true" ? "none" : "flex", "important");
     }
 }
 
-// Ejecutar cuando el HTML termine de cargar
 document.addEventListener("DOMContentLoaded", chequearSesion);
-
-// Ejecutar por si acaso el navegador recupera la página desde el historial/caché
 window.addEventListener("pageshow", chequearSesion);
+
 function cerrarSesion(event) {
     event.preventDefault();
-    localStorage.removeItem("sesionActiva"); // Elimina la marca de la sesión
-    window.location.reload(); // Recarga la página para aplicar los cambios visuales
+    localStorage.removeItem("sesionActiva");
+    window.location.reload();
 }
