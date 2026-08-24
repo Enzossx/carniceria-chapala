@@ -76,7 +76,6 @@ def detalle_corte(id_corte):
 @app.route('/agregar_al_carrito/<int:id_corte>', methods=['POST'])
 @login_required
 def agregar_al_carrito(id_corte):
-    # Obtener la cantidad enviada desde el formulario HTML
     try:
         cantidad = float(request.form.get('cantidad', 1))
     except (ValueError, TypeError):
@@ -85,7 +84,6 @@ def agregar_al_carrito(id_corte):
     conexion = conectar_db()
     cursor = conexion.cursor(dictionary=True)
     
-    # Verificar si el corte ya está en el carrito del usuario
     cursor.execute("SELECT id, cantidad FROM carrito WHERE id_usuario = %s AND id_corte = %s", (current_user.id, id_corte))
     item = cursor.fetchone()
 
@@ -143,7 +141,6 @@ def pagar_carrito():
     conexion = conectar_db()
     cursor = conexion.cursor(dictionary=True)
 
-    # Obtener ítems del carrito
     query = """
         SELECT c.id_corte, c.cantidad, cor.precio
         FROM carrito c
@@ -161,18 +158,15 @@ def pagar_carrito():
 
     total = sum(item['cantidad'] * item['precio'] for item in items)
 
-    # Crear registro de venta
     cursor.execute("INSERT INTO ventas (id_usuario, total) VALUES (%s, %s)", (current_user.id, total))
     id_venta = cursor.lastrowid
 
-    # Registrar detalle de venta
     for item in items:
         cursor.execute(
             "INSERT INTO detalle_ventas (id_venta, id_corte, cantidad, precio_unitario) VALUES (%s, %s, %s, %s)",
             (id_venta, item['id_corte'], item['cantidad'], item['precio'])
         )
 
-    # Vaciar carrito
     cursor.execute("DELETE FROM carrito WHERE id_usuario = %s", (current_user.id,))
 
     conexion.commit()
@@ -306,6 +300,34 @@ def login():
             return redirect(url_for('login'))
 
     return render_template('login.html')
+
+# Ruta para Olvidé mi Contraseña / Restablecer Contraseña
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'POST':
+        email = request.form['email']
+        nueva_password = request.form['password']
+
+        conexion = conectar_db()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
+        usuario = cursor.fetchone()
+
+        if usuario:
+            password_hashed = generate_password_hash(nueva_password)
+            cursor.execute("UPDATE usuarios SET password = %s WHERE id = %s", (password_hashed, usuario['id']))
+            conexion.commit()
+            cursor.close()
+            conexion.close()
+            flash("¡Contraseña actualizada con éxito! Ya puedes iniciar sesión.")
+            return redirect(url_for('login'))
+        else:
+            cursor.close()
+            conexion.close()
+            flash("No se encontró ninguna cuenta asociada a ese correo.")
+            return redirect(url_for('reset_password'))
+
+    return render_template('reset_password.html')
 
 # Ruta para Logout
 @app.route('/logout')
