@@ -1,100 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-    --rosa-pastel-fuerte: #ff69b4;
-    --rosa-oscuro: #e05297;
-    --blanco: #ffffff;
+    --bg-main: #e8e6e3;        /* Fondo general mate y relajante */
+    --navbar-bg: #22252a;     /* Navbar gris oscuro mate */
+    --card-bg: #dfddd8;       /* Tarjeta un toque más oscura para resaltar */
+    --text-primary: #1f2421;   /* Texto oscuro accesible */
+    --text-muted: #5c636a;     /* Texto secundario */
+    --border-color: #cbb9b3;   /* Borde suave de separación */
 }
 
+/* Base global */
 body {
-    background-color: whitesmoke;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
+/* Subtítulos */
 #Subtitulo, #Subtitulo2 {  
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: black;
-    font-family: 'Comic Neue', sans-serif;
-    font-weight: bold;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+    text-shadow: none;
     margin-bottom: 0; 
 }
 
 #Subtitulo {
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 #Subtitulo2 {
-    margin-top: 80px;
-    margin-bottom: 5px; 
+    margin-top: 40px;
+    margin-bottom: 20px; 
 }
 
+/* Navbar */
 .navbar {
-    background-color: var(--rosa-pastel-fuerte) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 10px 0;
+    background-color: var(--navbar-bg) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 12px 0;
 }
 
 .logo-img {
-    height: 75px;
-    width: 75px;
+    height: 60px;
+    width: 60px;
     object-fit: cover;
-    border: 2px solid var(--blanco);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .titulo-img-centrado {
-    height: 90px;
+    height: 70px;
     object-fit: contain;
     vertical-align: middle;
-}
-
-.navbar .nav-link {
-    color: var(--blanco) !important;
-    font-size: 1rem;
+    filter: brightness(-7) invert(0.50) !important;
     transition: opacity 0.2s ease;
 }
-
-.navbar .nav-link:hover {
+.titulo-img-centrado:hover {
     opacity: 0.85;
 }
-
-.navbar .nav-link.active {
-    color: #fff0f5 !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+.navbar .nav-link {
+    color: #e5e5e5 !important;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
-.navbar-toggler-icon {
-    filter: brightness(0) invert(1);
-}
-
+/* Botones */
 .btn-rosa-destacado {
-    background-color: var(--blanco);
-    color: var(--rosa-pastel-fuerte);
-    font-weight: bold;
-    border: none;
-    transition: all 0.3s ease;
+    background-color: #ffffff;
+    color: var(--navbar-bg);
+    font-weight: 600;
+    border: 1px solid #ffffff;
+    transition: all 0.2s ease;
 }
 
 .btn-rosa-destacado:hover {
-    background-color: var(--rosa-oscuro);
-    color: var(--blanco);
+    background-color: #d8d8d8;
+    color: var(--navbar-bg);
 }
 
+.btn-danger, .btn-outline-danger {
+    background-color: #2b3035 !important;
+    border-color: #2b3035 !important;
+    color: #ffffff !important;
+}
+
+.btn-danger:hover {
+    background-color: #141619 !important;
+}
+
+.btn-success {
+    background-color: #2b3035 !important;
+    border-color: #2b3035 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background-color: #141619 !important;
+}
+
+/* Tarjetas (Rediseñadas con leve toque oscuro) */
+.card, main .card {
+    background-color: var(--card-bg) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 14px !important;
+}
+
+.border-danger {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Inputs de las tarjetas */
+.form-control {
+    background-color: #f7f6f4;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: var(--text-primary);
+    padding: 0.6rem 1rem;
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    border-color: var(--navbar-bg);
+    box-shadow: 0 0 0 2px rgba(34, 37, 42, 0.15);
+}
+
+/* Carrusel y Productos */
 .carousel {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 15px;
     position: relative;
-    overflow: visible;
 }
 
 .viewport {
-    width: 800px;
+    width: 820px;
     overflow: hidden;
     margin: 0;
     display: flex;
@@ -104,69 +153,38 @@ body {
 .track {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 16px;
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     padding: 10px 0;
-    will-change: transform;
     width: max-content;
 }
 
 #track2 {
-    gap: 10px;
+    gap: 16px;
     display: flex;
     width: max-content;
 }
 
 .arrow {
-    background: rgba(0, 0, 0, 0.7); 
-    color: white;
-    border: none;
-    font-size: 24px;
+    background: #ffffff; 
+    color: var(--text-primary);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 16px;
     cursor: pointer;
-    padding: 15px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    margin: 0 15px;
-    transition: background 0.3s;
+    margin: 0 10px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .arrow:hover {
-    background: purple;
-}
-
-.game {
-    width: 200px;  
-    height: 120px;
-    margin: 0 !important;
-    background: #222;
-    border-radius: 10px;
-    overflow: hidden; 
-    flex-shrink: 0;
-}
-
-.game img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-button.game {
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    outline: none;
-    background: #222;
-    transition: transform 0.3s ease, filter 0.3s;
-}
-
-button.game:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-    box-shadow: 0 0 15px purple;
-}
-
-button.game:active {
-    transform: scale(0.95);
+    background: var(--navbar-bg);
+    color: #ffffff;
 }
 
 .team-container {
@@ -174,47 +192,55 @@ button.game:active {
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
-    margin: 0 !important;
-    width: 200px;
+    width: 190px;
 }
 
 .team-label {
-    color: black;
-    font-family: 'Comic Neue', sans-serif;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 .team {
-    background: #222;
-    border: none;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 12px !important;
     cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s ease;
 }
 
 .team:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px purple;
+    transform: translateY(-2px);
 }
 
 .team img {
-    width: 97% !important; 
-    height: 97% !important;
+    width: 100% !important; 
+    height: 100% !important;
     object-fit: cover; 
-    padding: 0 !important; 
-    transition: transform 0.3s ease;
 }
 
 #track2 .team {
     width: 100%; 
     height: 140px; 
-    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #222;
-    border-radius: 10px;
-    padding: 0;
-    overflow: hidden;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+/* Footer */
+footer {
+    background-color: var(--navbar-bg) !important;
+    color: #d1cfc7 !important;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+footer p {
+    color: #d1cfc7 !important;
 }
