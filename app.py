@@ -56,6 +56,155 @@ def index():
     conexion.close()
     return render_template('index.html', cortes=cortes_guardados, busqueda=busqueda)
 
+# Ruta para ver el detalle de un corte
+@app.route('/corte/<int:id_corte>')
+def detalle_corte(id_corte):
+    conexion = conectar_db()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT id, nombre, precio FROM cortes WHERE id = %s", (id_corte,))
+    corte = cursor.fetchone()
+    cursor.close()
+    conexion.close()
+
+    if not corte:
+        flash("El corte seleccionado no existe.")
+        return redirect(url_for('index'))
+
+    return render_template('comprar.html', corte=corte)
+
+# Ruta para agregar un ítem al carrito
+@app.route('/agregar_al_carrito/<int:id_corte>', methods=['POST'])
+@login_required
+def agregar_al_carrito(id_corte):
+    # Obtener la cantidad enviada desde el formulario HTML
+    try:
+        cantidad = float(request.form.get('cantidad', 1))
+    except (ValueError, TypeError):
+        cantidad = 1.0
+
+    conexion = conectar_db()
+    cursor = conexion.cursor(dictionary=True)
+    
+    # Verificar si el corte ya está en el carrito del usuario
+    cursor.execute("SELECT id, cantidad FROM carrito WHERE id_usuario = %s AND id_corte = %s", (current_user.id, id_corte))
+    item = cursor.fetchone()
+
+    if item:
+        cursor.execute("UPDATE carrito SET cantidad = cantidad + %s WHERE id = %s", (cantidad, item['id']))
+    else:
+        cursor.execute("INSERT INTO carrito (id_usuario, id_corte, cantidad) VALUES (%s, %s, %s)", (current_user.id, id_corte, cantidad))
+
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+    flash("Corte agregado al carrito con éxito.")
+    return redirect(url_for('ver_carrito'))
+
+# Ruta para ver el carrito
+@app.route('/carrito')
+@login_required
+def ver_carrito():
+    conexion = conectar_db()
+    cursor = conexion.cursor(dictionary=True)
+    
+    query = """
+        SELECT c.id AS id_item, c.id_corte, c.cantidad, cor.nombre, cor.precio, (c.cantidad * cor.precio) AS subtotal
+        FROM carrito c
+        JOIN cortes cor ON c.id_corte = cor.id
+        WHERE c.id_usuario = %s
+    """
+    cursor.execute(query, (current_user.id,))
+    items = cursor.fetchall()
+    
+    total = sum(item['subtotal'] for item in items)
+    
+    cursor.close()
+    conexion.close()
+    return render_template('carrito.html', items=items, total=total)
+
+# Ruta para quitar un ítem del carrito
+@app.route('/eliminar_del_carrito/<int:id_item>')
+@login_required
+def eliminar_del_carrito(id_item):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM carrito WHERE id = %s AND id_usuario = %s", (id_item, current_user.id))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+    flash("Ítem eliminado del carrito.")
+    return redirect(url_for('ver_carrito'))
+
+# Ruta para pagar todo el carrito
+@app.route('/pagar_carrito', methods=['POST'])
+@login_required
+def pagar_carrito():
+    conexion = conectar_db()
+    cursor = conexion.cursor(dictionary=True)
+
+    # Obtener ítems del carrito
+    query = """
+        SELECT c.id_corte, c.cantidad, cor.precio
+        FROM carrito c
+        JOIN cortes cor ON c.id_corte = cor.id
+        WHERE c.id_usuario = %s
+    """
+    cursor.execute(query, (current_user.id,))
+    items = cursor.fetchall()
+
+    if not items:
+        flash("El carrito está vacío.")
+        cursor.close()
+        conexion.close()
+        return redirect(url_for('ver_carrito'))
+
+    total = sum(item['cantidad'] * item['precio'] for item in items)
+
+    # Crear registro de venta
+    cursor.execute("INSERT INTO ventas (id_usuario, total) VALUES (%s, %s)", (current_user.id, total))
+    id_venta = cursor.lastrowid
+
+    # Registrar detalle de venta
+    for item in items:
+        cursor.execute(
+            "INSERT INTO detalle_ventas (id_venta, id_corte, cantidad, precio_unitario) VALUES (%s, %s, %s, %s)",
+            (id_venta, item['id_corte'], item['cantidad'], item['precio'])
+        )
+
+    # Vaciar carrito
+    cursor.execute("DELETE FROM carrito WHERE id_usuario = %s", (current_user.id,))
+
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+    flash("¡Compra realizada con éxito!")
+    return redirect(url_for('historial'))
+
+# Ruta para ver el historial de compras
+@app.route('/historial')
+@login_required
+def historial():
+    conexion = conectar_db()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("SELECT id, total, fecha FROM ventas WHERE id_usuario = %s ORDER BY fecha DESC", (current_user.id,))
+    compras = cursor.fetchall()
+
+    for compra in compras:
+        cursor.execute("""
+            SELECT dv.cantidad, dv.precio_unitario, c.nombre AS nombre_corte
+            FROM detalle_ventas dv
+            JOIN cortes c ON dv.id_corte = c.id
+            WHERE dv.id_venta = %s
+        """, (compra['id'],))
+        compra['detalles'] = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+    return render_template('historial.html', compras=compras)
+
 # Ruta para Agregar Nuevo Corte (Protegida)
 @app.route('/nuevo_corte', methods=['GET', 'POST'])
 @login_required
