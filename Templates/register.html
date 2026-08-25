@@ -22,7 +22,6 @@
                 <img src="{{ url_for('static', filename='img/carni.png') }}" alt="Carnicería Chapala" class="titulo-img-centrado">
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center gap-3 p-0">
-                
                 {% if current_user.is_authenticated %}
                     <span class="text-white fw-bold">Hola, {{ current_user.nombre }}</span>
                     <a href="{{ url_for('logout') }}" class="btn btn-outline-light rounded-pill px-3">Cerrar Sesión</a>
@@ -36,7 +35,6 @@
     <div class="card p-4 shadow-lg rounded-4 border-0" style="max-width: 450px; width: 100%; background-color: #ffffff;">
         <h2 id="Subtitulo" class="text-center mb-4" style="margin-top: 0;">Crear Cuenta</h2>
         
-        <!-- Bloque para mostrar alerta de error -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -82,7 +80,7 @@
 
             <div class="text-center mt-3 d-flex flex-column gap-1">
                 <small class="text-muted">¿Ya tienes cuenta? <a href="{{ url_for('login') }}" class="fw-bold" style="color: var(--rosa-pastel-fuerte); text-decoration: none;">Inicia sesión</a></small>
-                <small><a href="{{ url_for('reset_password') }}" class="text-secondary" style="text-decoration: none;">¿Olvidaste tu contraseña?</a></small>
+                <small><a href="{{ url_for('request_reset') }}" class="text-secondary" style="text-decoration: none;">¿Olvidaste tu contraseña?</a></small>
             </div>
         </form>
     </div>

@@ -1,10 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for, Response, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 import mysql.connector
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_chapala'
+
+# Configuración de Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'enzosalvatierra44@gmail.com'  # Cambia por tu correo
+app.config['MAIL_PASSWORD'] = 'ttrg wmly vgfy ypbq'    # Cambia por tu contraseña de aplicación de Google
+app.config['MAIL_DEFAULT_SENDER'] = ('Carnicería Chapala', 'enzosalvatierra44@gmail.com')
+
+mail = Mail(app)
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 # Configuración de Flask-Login
 login_manager = LoginManager()
@@ -301,33 +314,59 @@ def login():
 
     return render_template('login.html')
 
-# Ruta para Olvidé mi Contraseña / Restablecer Contraseña
-@app.route('/reset_password', methods=['GET', 'POST'])
-def reset_password():
+# Paso 1: Pedir el correo para restablecer contraseña
+@app.route('/request_reset', methods=['GET', 'POST'])
+def request_reset():
     if request.method == 'POST':
         email = request.form['email']
-        nueva_password = request.form['password']
-
         conexion = conectar_db()
         cursor = conexion.cursor(dictionary=True)
         cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
         usuario = cursor.fetchone()
+        cursor.close()
+        conexion.close()
 
         if usuario:
-            password_hashed = generate_password_hash(nueva_password)
-            cursor.execute("UPDATE usuarios SET password = %s WHERE id = %s", (password_hashed, usuario['id']))
-            conexion.commit()
-            cursor.close()
-            conexion.close()
-            flash("¡Contraseña actualizada con éxito! Ya puedes iniciar sesión.")
-            return redirect(url_for('login'))
-        else:
-            cursor.close()
-            conexion.close()
-            flash("No se encontró ninguna cuenta asociada a ese correo.")
-            return redirect(url_for('reset_password'))
+            token = serializer.dumps(email, salt='reset-password-salt')
+            link = url_for('reset_with_token', token=token, _external=True)
+            
+            try:
+                msg = Message("Restablecer Contraseña - Carnicería Chapala", recipients=[email])
+                msg.body = f"Hola,\n\nHas solicitado restablecer tu contraseña en Carnicería Chapala. Haz clic en el siguiente enlace o cópialo en tu navegador para cambiarla:\n\n{link}\n\nEste enlace expira en 30 minutos.\n\nSi no realizaste esta solicitud, ignora este mensaje."
+                mail.send(msg)
+            except Exception as e:
+                flash("Ocurrió un error al enviar el correo. Verifica tu configuración.")
+                return redirect(url_for('request_reset'))
 
-    return render_template('reset_password.html')
+        flash("Si el correo ingresado se encuentra registrado, recibirás un mensaje con las instrucciones.")
+        return redirect(url_for('login'))
+
+    return render_template('request_reset.html')
+
+# Paso 2: Cambiar la contraseña validando el token enviado por mail
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_with_token(token):
+    try:
+        email = serializer.loads(token, salt='reset-password-salt', max_age=1800) # Token válido por 30 minutos
+    except (SignatureExpired, BadTimeSignature):
+        flash("El enlace de restablecimiento ha expirado o es inválido. Por favor solicita uno nuevo.")
+        return redirect(url_for('request_reset'))
+
+    if request.method == 'POST':
+        nueva_password = request.form['password']
+        password_hashed = generate_password_hash(nueva_password)
+
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+        cursor.execute("UPDATE usuarios SET password = %s WHERE email = %s", (password_hashed, email))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+        flash("¡Tu contraseña se ha actualizado con éxito! Ya puedes iniciar sesión.")
+        return redirect(url_for('login'))
+
+    return render_template('reset_password.html', token=token)
 
 # Ruta para Logout
 @app.route('/logout')
